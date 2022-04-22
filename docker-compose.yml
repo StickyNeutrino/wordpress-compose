@@ -1,0 +1,83 @@
+version: '3.3'
+
+services:
+  filestash:
+    image: machines/filestash
+    restart: always
+    environment:
+    - APPLICATION_URL=filestash:8334
+
+  ftp:
+    image: docker.io/stilliard/pure-ftpd
+    restart: always
+    volumes:
+     - wordpress_data:/wordpress
+    environment:
+      PUBLICHOST: "localhost"
+      FTP_USER_NAME: wordpress
+      FTP_USER_PASS: wordpress
+      FTP_USER_HOME: /wordpress
+
+  wireguard:
+    image: 'docker.io/linuxserver/wireguard:latest'
+    ports:
+     - '51820:51820/udp'
+    restart: always
+    environment:
+      PEERS: '5'
+    volumes:
+     - ./wireguard_config:/config
+    cap_add:
+     - NET_ADMIN
+     - SYS_MODULE
+    sysctls:
+     net.ipv4.conf.all.src_valid_mark: 1 
+ 
+  db:
+    image: mysql:5.7
+    volumes:
+     - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: /run/secrests/db_root
+      MYSQL_DATABASE: /run/secrests/db_name
+      MYSQL_USER: /run/secrests/db_user
+      MYSQL_PASSWORD: /run/secrests/db_password
+    secrets:
+     - db_root
+     - db_name
+     - db_user
+     - db_password
+    
+  wordpress:
+    depends_on:
+     - db
+    image: wordpress:latest
+    volumes:
+     - wordpress_data:/var/www/html
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: /run/secrests/db_user
+      WORDPRESS_DB_PASSWORD: /run/secrests/db_password
+      WORDPRESS_DB_NAME: /run/secrests/db_name
+    secrets:
+     - db_user
+     - db_password
+     - db_name
+
+secrets:
+  db_root:
+    file: ./secrets/root
+  db_user:
+    file: ./secrets/user
+  db_password:
+    file: ./secrets/password
+  db_name:
+    file: ./secrets/name
+
+volumes:
+  db_data: 
+    external: true
+  wordpress_data: 
+    external: true
