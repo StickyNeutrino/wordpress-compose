@@ -1,3 +1,6 @@
+apt update
+apt install -y docker-compose pwgen
+
 docker volume create db_data
 docker volume create wordpress_data
 
