@@ -12,6 +12,7 @@ services:
     restart: always
     volumes:
      - wordpress_data:/wordpress
+     - ./wireguard_config:/wordpress/wireguard
     environment:
       PUBLICHOST: "localhost"
       FTP_USER_NAME: wordpress
@@ -25,6 +26,7 @@ services:
     restart: always
     environment:
       PEERS: '5'
+      PUID: $VOLUME_USER
     volumes:
      - ./wireguard_config:/config
     cap_add:
