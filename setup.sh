@@ -16,3 +16,5 @@ pwgen -1 > secrets/password
 pwgen -1 > secrets/name
 
 docker-compose up -d
+
+cat wireguard_config/peer1/peer1.conf 
