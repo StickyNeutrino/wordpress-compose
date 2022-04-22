@@ -14,3 +14,5 @@ pwgen -1 > secrets/root
 pwgen -1 > secrets/user
 pwgen -1 > secrets/password
 pwgen -1 > secrets/name
+
+docker-compose up -d
