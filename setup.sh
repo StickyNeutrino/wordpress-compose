@@ -6,6 +6,7 @@ docker volume create wordpress_data
 
 mkdir secrets
 mkdir ftp
+mkdir -p ./certbot/www ./certbot/conf
 
 useradd wordpress
 export VOLUME_USER=$(id wordpress -u)
@@ -15,7 +16,6 @@ pwgen -1 > secrets/user
 pwgen -1 > secrets/password
 pwgen -1 > secrets/name
 
-docker-compose up -d
+#get real cert
+docker compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d testing.love2lingo.com
 
-sleep 1
-cat ./wireguard_config/peer1/peer1.conf 
