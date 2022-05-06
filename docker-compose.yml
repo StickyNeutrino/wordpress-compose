@@ -50,7 +50,7 @@ services:
      - db_name
      - db_user
      - db_password
-    
+
   wordpress:
     depends_on:
      - db
@@ -77,13 +77,10 @@ services:
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
-      - ./certbot/conf/:/etc/nginx/ssl/:ro
-      
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - ./certbot/:/etc/nginx/ssl/:ro
+    depends_on: 
+     - wordpress
+
 
 secrets:
   db_root:
