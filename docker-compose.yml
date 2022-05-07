@@ -12,28 +12,11 @@ services:
     restart: always
     volumes:
      - wordpress_data:/wordpress
-     - ./wireguard_config:/wordpress/wireguard
     environment:
       PUBLICHOST: "localhost"
       FTP_USER_NAME: wordpress
       FTP_USER_PASS: wordpress
       FTP_USER_HOME: /wordpress
-
-  wireguard:
-    image: 'docker.io/linuxserver/wireguard:latest'
-    ports:
-     - '51820:51820/udp'
-    restart: always
-    environment:
-      PEERS: '5'
-      PUID: $VOLUME_USER
-    volumes:
-     - ./wireguard_config:/config
-    cap_add:
-     - NET_ADMIN
-     - SYS_MODULE
-    sysctls:
-     net.ipv4.conf.all.src_valid_mark: 1 
  
   db:
     image: mysql:5.7
