@@ -1,22 +1,6 @@
 version: '3.3'
 
 services:
-  filestash:
-    image: machines/filestash
-    restart: always
-    environment:
-    - APPLICATION_URL=filestash:8334
-
-  ftp:
-    image: docker.io/stilliard/pure-ftpd
-    restart: always
-    volumes:
-     - wordpress_data:/wordpress
-    environment:
-      PUBLICHOST: "localhost"
-      FTP_USER_NAME: wordpress
-      FTP_USER_PASS: wordpress
-      FTP_USER_HOME: /wordpress
  
   db:
     image: mysql:5.7
@@ -61,8 +45,24 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/:/etc/nginx/ssl/:ro
-    depends_on: 
-     - wordpress
+
+
+  filestash:
+    image: machines/filestash
+    restart: always
+    environment:
+    - APPLICATION_URL=filestash.testing.love2lingo.com
+
+  ftp:
+    image: docker.io/stilliard/pure-ftpd
+    restart: always
+    volumes:
+     - wordpress_data:/wordpress
+    environment:
+      PUBLICHOST: "localhost"
+      FTP_USER_NAME: wordpress
+      FTP_USER_PASS: wordpress
+      FTP_USER_HOME: /wordpress
 
 
 secrets:
