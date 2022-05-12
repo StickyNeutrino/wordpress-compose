@@ -66,6 +66,8 @@ services:
       FTP_USER_NAME: wordpress
       FTP_USER_PASS: wordpress
       FTP_USER_HOME: /wordpress
+      FTP_USER_UID: 33
+      FTP_USER_GID: 33
 
 
 secrets:
