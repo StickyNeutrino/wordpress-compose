@@ -54,7 +54,7 @@ services:
     image: machines/filestash
     restart: always
     environment:
-    - APPLICATION_URL=filestash.testing.love2lingo.com
+    - APPLICATION_URL=filestash.love2lingo.com
 
   ftp:
     image: docker.io/stilliard/pure-ftpd
